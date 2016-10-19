@@ -11,7 +11,14 @@ import rx.Observable;
  */
 public class ThrowsAnError {
     public static void main(String[] args) {
+
+        // stream will successfully emit '1'
+        Observable<Integer> one = Observable.just(1);
+
+        // stream will throw an error
         Observable err = Observable.error(new Exception("something went wrong"));
-        err.toBlocking().first();
+
+        // error is thrown on the the main thread
+        Observable.zip(one, err, (num, o) -> null).toBlocking().first();
     }
 }
